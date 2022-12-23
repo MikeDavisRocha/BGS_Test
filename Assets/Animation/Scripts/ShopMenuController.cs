@@ -4,6 +4,7 @@ public class ShopMenuController : MonoBehaviour
 {
     public GameObject ShopMenuUI;
     private CanvasGroup shopMenuUICanvasGroup;
+    public int SetCanvasGroupAlpha { set { shopMenuUICanvasGroup.alpha = value; } }
 
     private void Awake()
     {
@@ -12,11 +13,12 @@ public class ShopMenuController : MonoBehaviour
 
     public void ShowShopMenuUI()
     {
-        shopMenuUICanvasGroup.alpha = 1;
+        FindObjectOfType<DialogBox>().ShowDialog();        
     }
 
     public void HideShopMenuUI()
     {
         shopMenuUICanvasGroup.alpha = 0;
+        FindObjectOfType<DialogBox>().HideDialog();
     }
 }

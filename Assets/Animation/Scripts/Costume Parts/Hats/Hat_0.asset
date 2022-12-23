@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   costumeName: Green Hat
   costumePrice: 100
+  hasPlayerBought: 0
+  costumeIcon: {fileID: 0}
   costumeAnimator: {fileID: 2995906557475802532, guid: ea648d5c606df7748a58caf265bafade, type: 3}
