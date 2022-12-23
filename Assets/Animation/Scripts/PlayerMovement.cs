@@ -2,30 +2,31 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private Animator animator;
+    private Rigidbody2D rb;    
     public float movementSpeed;
-    private Vector2 movementInput;
-    private bool isShooting;
-    private bool isDead = false;
+    public Vector2 movementInput;
+    public bool isShooting;
+    public bool isDead = false;
+    public float Horizontal { get; set; }
+    public float Vertical { get; set; }
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
         Move();
         Shoot();
-        Animate();
     }
 
     private void Move()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
+        Horizontal = horizontal;
+        Vertical = vertical;
         if (!isDead)
         {
             movementInput = new Vector2(horizontal, vertical);
@@ -42,15 +43,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Animate()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        animator.SetFloat("MovementX", movementInput.x);
-        animator.SetFloat("MovementY", movementInput.y);
-        animator.SetFloat("Speed", movementInput.sqrMagnitude * movementSpeed);
-        animator.SetBool("isShooting", isShooting);
-        if (isDead)
+        if (collision.tag.Equals("NPC"))
         {
-            animator.SetTrigger("isDead");
+            collision.GetComponent<ShopMenuController>().ShowShopMenuUI();
+        }
+        else if (collision.tag.Equals("MoneyBag"))
+        {
+            MoneyController.Instance.IncreaseMoney(collision.GetComponent<MoneyBag>().Value);
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("NPC"))
+        {
+            collision.GetComponent<ShopMenuController>().HideShopMenuUI();
         }
     }
 }

@@ -3,34 +3,56 @@ using UnityEngine;
 
 public class CostumeSelector : MonoBehaviour
 {
-    [Header("Hat")]
-    [SerializeField] private List<Animator> hatsAnimatorList;
-
-    [Header("Scarf")]
-    [SerializeField] private List<Animator> scarfsAnimatorList;
-
-    [Header("Boots")]
-    [SerializeField] private List<Animator> bootsAnimatorList;
+    [Header("Costumes List")]
+    [SerializeField] private List<SO_CostumePart> hatsList;
+    [SerializeField] private List<SO_CostumePart> scarfsList;
+    [SerializeField] private List<SO_CostumePart> bootsList;
 
 
-    [Header("Player Hat")]
+    [Header("Player Costumes")]
     [SerializeField] private Animator playerHatAnimator;
-
-    [Header("Player Scarf")]
     [SerializeField] private Animator playerScarfAnimator;
-
-    [Header("Player Boots")]
     [SerializeField] private Animator playerBootsAnimator;
-    
 
-    private void Start()
+    public void BuyHat(int costumeIndex)
     {
-        playerHatAnimator.gameObject.SetActive(true);
-        playerHatAnimator.runtimeAnimatorController = hatsAnimatorList[0].runtimeAnimatorController;        
+        if (hatsList[costumeIndex].costumePrice <= MoneyController.Instance.TotalMoney)
+        {
+            playerHatAnimator.gameObject.SetActive(true);
+            playerHatAnimator.runtimeAnimatorController = hatsList[costumeIndex].costumeAnimator.runtimeAnimatorController;
+            MoneyController.Instance.DecreaseMoney(hatsList[costumeIndex].costumePrice);
+        }
+        else
+        {
+            PopUpManager.Instance.ShowPopUp();
+        }
     }
 
-    public void Click()
+    public void BuyScarf(int costumeIndex)
     {
-        Debug.Log("BUTTON CLICKED");
+        if (scarfsList[costumeIndex].costumePrice <= MoneyController.Instance.TotalMoney)
+        { 
+            playerScarfAnimator.gameObject.SetActive(true);
+            playerScarfAnimator.runtimeAnimatorController = scarfsList[costumeIndex].costumeAnimator.runtimeAnimatorController;
+            MoneyController.Instance.DecreaseMoney(scarfsList[costumeIndex].costumePrice);
+        }
+        else
+        {
+            PopUpManager.Instance.ShowPopUp();
+        }
+    }
+
+    public void BuyBoots(int costumeIndex)
+    {
+        if (bootsList[costumeIndex].costumePrice <= MoneyController.Instance.TotalMoney)
+        { 
+            playerBootsAnimator.gameObject.SetActive(true);
+            playerBootsAnimator.runtimeAnimatorController = bootsList[costumeIndex].costumeAnimator.runtimeAnimatorController;
+            MoneyController.Instance.DecreaseMoney(bootsList[costumeIndex].costumePrice);
+        }
+        else
+        {
+            PopUpManager.Instance.ShowPopUp();
+        }
     }
 }
